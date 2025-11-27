@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BYFORT - Chat Lokal Stabil</title>
+    <!-- Memuat Tailwind CSS untuk desain responsif dan modern -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Memuat Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* Gaya Kustom untuk Font dan Desain */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0fdfa; /* Teal Sangat Muda */
+        }
+        #chat-window {
+            height: calc(100vh - 160px); 
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+        /* Style untuk Bubble Pesan */
+        .message-bubble {
+            max-width: 85%; 
+            min-width: 150px;
+            border-radius: 18px; 
+            padding: 10px 14px;
+            margin-bottom: 12px;
+            word-wrap: break-word;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.1s;
+        }
+        .message-bubble:hover {
+            transform: scale(1.015);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+        .message-bubble.self {
+            border-radius: 18px 18px 0px 18px;
+            background-color: #ccfbf1; /* Teal 100 */
+        }
+        .message-bubble.other {
+            border-radius: 18px 18px 18px 0px;
+            background-color: #ffffff; /* Putih */
+            border: 1px solid #e0f2f7;
+        }
+        .sender-name {
+            font-weight: 900; 
+            color: #042f2e; 
+            margin-bottom: 4px;
+            font-size: 0.875rem;
+        }
+        /* Mobile adjustment */
+        @media (max-width: 640px) {
+            #chat-window {
+                height: calc(100vh - 180px);
+            }
+            .message-bubble {
+                max-width: 95%; 
+                min-width: unset;
+                padding: 8px 12px;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased">
+
+    <!-- Header BYFORT (Sticky) -->
+    <header class="p-4 shadow-xl bg-white border-b-4 border-teal-500 sticky top-0 z-10">
+        <h1 class="text-4xl font-black text-gray-900 flex items-center">
+            <svg class="w-9 h-9 mr-2 text-teal-600" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm-1 15.5V11H8V9h4.5a3.5 3.5 0 010 7H11z"/>
+            </svg>
+            BYFORT
+        </h1>
+        <div class="flex justify-between items-center mt-1">
+            <p class="text-xs text-gray-500 font-medium" id="user-info">Memuat Info Sesi...</p>
+            <!-- Indikator Status (Kini Status Lokal) -->
+            <div id="status-message" class="text-xs font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-600 shadow-sm">
+                MODE LOKAL
+            </div>
+        </div>
+        <!-- Pesan Status/Error Global (Kini untuk pesan sistem) -->
+        <div id="global-status-message" class="mt-2 hidden p-2 rounded-lg text-sm font-semibold"></div>
+    </header>
+
+    <main class="flex-grow container mx-auto p-4 flex flex-col">
+        <!-- Jendela Obrolan -->
+        <div id="chat-window" class="flex-grow bg-white p-4 rounded-xl shadow-inner mb-4 border border-gray-100">
+            <p class="text-center text-gray-400 italic mt-16">Selamat datang! Memuat obrolan lokal...</p>
+        </div>
+
+        <!-- Area Input Pesan -->
+        <div class="bg-white p-4 rounded-xl shadow-2xl flex flex-col">
+            <div class="flex items-center">
+                <input type="text" id="message-input" placeholder="Ketik pesan Anda di sini..."
+                       class="flex-grow p-4 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-4 focus:ring-teal-300 transition duration-150 text-lg text-gray-900 font-medium mr-2 disabled:bg-gray-100"
+                       onkeydown="if(event.key === 'Enter') sendMessage()">
+
+                <!-- Tombol Kirim Pesan -->
+                <button onclick="sendMessage()" id="send-button"
+                        class="p-4 bg-teal-600 text-white rounded-xl font-bold hover:bg-teal-700 transition duration-150 shadow-lg shadow-teal-400 hover:shadow-xl disabled:opacity-50">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                    </svg>
+                </button>
+            </div>
+            <!-- Catatan penting untuk pengguna -->
+             <p class="text-xs text-gray-500 mt-2 text-center">
+                *Catatan: Ini adalah chat mode lokal. Pesan disimpan di browser Anda dan tidak dapat dilihat pengguna lain.
+            </p>
+        </div>
+    </main>
+
+    <!-- Modal Input Nama Pengguna -->
+    <div id="name-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center hidden z-50">
+        <div class="bg-white p-8 rounded-xl shadow-2xl max-w-sm w-full transform transition-all duration-300 scale-100">
+            <h2 class="text-3xl font-extrabold mb-4 text-teal-800">👋 Selamat Datang di BYFORT!</h2>
+            <p class="mb-6 text-gray-700 font-medium">Masukkan nama panggilan Anda. Ini akan disimpan secara lokal.</p>
+            <input type="text" id="username-input" placeholder="Contoh: Sang Juara"
+                   class="w-full p-4 border-4 border-teal-300 rounded-xl mb-6 text-xl focus:outline-none focus:ring-4 focus:ring-teal-500 text-gray-900 font-bold">
+            <button onclick="setUserName()"
+                    class="w-full p-4 bg-teal-600 text-white text-lg rounded-xl font-extrabold hover:bg-teal-700 transition duration-150 shadow-lg shadow-teal-400">
+                Mulai Chatting Cepat
+            </button>
+        </div>
+    </div>
+
+    <!-- Skrip Logika Aplikasi Penuh (LOKAL) -->
+    <script>
+        // --- 1. SETUP VARIABEL GLOBAL & KUNCI LOCALSTORAGE ---
+        const USERNAME_KEY = 'byfort_local_username';
+        const MESSAGES_KEY = 'byfort_local_messages';
+        const DOMElements = {
+            nameModal: document.getElementById('name-modal'),
+            usernameInput: document.getElementById('username-input'),
+            chatWindow: document.getElementById('chat-window'),
+            messageInput: document.getElementById('message-input'),
+            userInfoP: document.getElementById('user-info')
+        };
+
+        let currentUserName = localStorage.getItem(USERNAME_KEY);
+        // ID pengguna kini adalah ID unik sesi lokal
+        const currentUserId = 'LOCAL_USER_' + (localStorage.getItem('byfort_local_id') || Math.random().toString(36).substring(2, 9));
+        localStorage.setItem('byfort_local_id', currentUserId.replace('LOCAL_USER_', ''));
+
+
+        /**
+         * 2. LOGIKA PENYIMPANAN & PENGAMBILAN DATA
+         */
+        function loadMessages() {
+            try {
+                const data = localStorage.getItem(MESSAGES_KEY);
+                return data ? JSON.parse(data) : [];
+            } catch (e) {
+                console.error("Gagal memuat pesan dari localStorage:", e);
+                return [];
+            }
+        }
+
+        function saveMessages(messages) {
+            try {
+                localStorage.setItem(MESSAGES_KEY, JSON.stringify(messages));
+            } catch (e) {
+                console.error("Gagal menyimpan pesan ke localStorage:", e);
+                displayGlobalStatus("ERROR: Penyimpanan lokal penuh atau dinonaktifkan.", true);
+            }
+        }
+        
+        function displayGlobalStatus(message, isError = false) {
+            const statusDiv = document.getElementById('global-status-message');
+            statusDiv.textContent = message;
+            statusDiv.classList.remove('hidden');
+            statusDiv.className = `mt-2 p-2 rounded-lg text-sm font-semibold transition-all duration-300 ${isError ? 'bg-red-500 text-white' : 'bg-blue-500 text-white'}`;
+            setTimeout(() => statusDiv.classList.add('hidden'), 5000);
+        }
+
+        /**
+         * 3. LOGIKA NAMA PENGGUNA
+         */
+        window.setUserName = function() {
+            const name = DOMElements.usernameInput.value.trim();
+            if (name.length < 2 || name.length > 20) {
+                displayGlobalStatus('Nama harus antara 2 hingga 20 karakter.', false);
+                return;
+            }
+            
+            currentUserName = name;
+            localStorage.setItem(USERNAME_KEY, name);
+            DOMElements.userInfoP.textContent = `Anda login sebagai: ${currentUserName} | Sesi Lokal: ${currentUserId.substring(11)}`;
+            DOMElements.nameModal.classList.add('hidden');
+            
+            // Muat ulang chat untuk menampilkan nama baru
+            renderChat(); 
+        }
+
+        /**
+         * 4. LOGIKA TAMPILAN PESAN
+         */
+        function displayMessage(message) {
+            const isSelf = message.userId === currentUserId;
+            const messageTime = new Date(message.timestamp);
+
+            const div = document.createElement('div');
+            div.className = `flex ${isSelf ? 'justify-end' : 'justify-start'} w-full`;
+
+            const bubble = document.createElement('div');
+            bubble.className = `message-bubble ${isSelf ? 'self' : 'other'} text-left`;
+
+            const nameSpan = document.createElement('span');
+            nameSpan.className = 'sender-name block';
+            nameSpan.textContent = message.userName || 'Pengguna Lokal';
+            bubble.appendChild(nameSpan);
+
+            const textP = document.createElement('p');
+            textP.className = 'message-text';
+            textP.textContent = message.content;
+            bubble.appendChild(textP);
+
+            const timeSpan = document.createElement('span');
+            timeSpan.className = 'block text-xs text-gray-400 mt-1';
+            const formattedTime = messageTime.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+            const formattedDate = messageTime.toLocaleDateString('id-ID', { day: '2-digit', month: 'short' });
+            timeSpan.textContent = `${formattedTime} | ${formattedDate}`; 
+            bubble.appendChild(timeSpan);
+            
+            div.appendChild(bubble);
+            DOMElements.chatWindow.appendChild(div);
+        }
+
+        /**
+         * 5. LOGIKA RENDER CHAT UTAMA
+         */
+        function renderChat() {
+            const messages = loadMessages();
+            DOMElements.chatWindow.innerHTML = ''; 
+
+            if (messages.length === 0) {
+                DOMElements.chatWindow.innerHTML = '<p class="text-center text-gray-400 italic mt-16">Obrolan kosong. Kirim pesan pertama Anda!</p>';
+            } else {
+                messages.forEach(message => {
+                    displayMessage(message);
+                });
+            }
+            
+            // Scroll ke bawah
+            DOMElements.chatWindow.scrollTop = DOMElements.chatWindow.scrollHeight;
+        }
+
+        /**
+         * 6. LOGIKA PENGIRIMAN PESAN
+         */
+        window.sendMessage = function() {
+            if (!currentUserName) {
+                DOMElements.nameModal.classList.remove('hidden');
+                return;
+            }
+
+            const content = DOMElements.messageInput.value.trim();
+            if (content === '') return;
+
+            DOMElements.messageInput.value = '';
+
+            const newMessage = {
+                userId: currentUserId,
+                userName: currentUserName,
+                content: content,
+                timestamp: new Date().toISOString(), // Simpan sebagai string ISO
+            };
+
+            const messages = loadMessages();
+            messages.push(newMessage);
+            saveMessages(messages);
+            
+            // Render ulang chat
+            renderChat();
+        }
+
+        /**
+         * 7. INISIALISASI
+         */
+        window.onload = function() {
+            if (!currentUserName) {
+                DOMElements.nameModal.classList.remove('hidden');
+                DOMElements.usernameInput.focus();
+                DOMElements.userInfoP.textContent = "Status: Menunggu Nama Pengguna";
+            } else {
+                 DOMElements.userInfoP.textContent = `Anda login sebagai: ${currentUserName} | Sesi Lokal: ${currentUserId.substring(11)}`;
+                 renderChat();
+            }
+        };
+    </script>
+</body>
+</html>
