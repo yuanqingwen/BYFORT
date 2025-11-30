@@ -1,0 +1,1226 @@
+<!DOCTYPE html> 
+<html lang="id"> 
+<head> 
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>BYFORT - E-Commerce & Affiliate Terbaik</title> 
+    <script src="https://cdn.tailwindcss.com"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"> 
+    <style> 
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap'); 
+        * { font-family: 'Inter', sans-serif; } 
+        .glass { backdrop-filter: blur(20px); background: rgba(255,255,255,0.1); } 
+        .glass-dark { backdrop-filter: blur(20px); background: rgba(0,0,0,0.3); } 
+        .gradient-gold { background: linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FF8C00 100%); } 
+        .neon-glow { box-shadow: 0 0 20px rgba(255,215,0,0.5); } 
+        .pulse-slow { animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite; } 
+        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } } 
+        .floating { animation: float 6s ease-in-out infinite; } 
+        .success-check { animation: checkmark 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); } 
+        @keyframes checkmark { 0% { transform: scale(0) rotate(0deg); opacity: 1; } 50% { transform: scale(1.2) rotate(-12deg); } 100% { transform: scale(1) rotate(0deg); opacity: 1; } } 
+        .sidebar-enter { animation: slideIn 0.3s ease-out; } 
+        @keyframes slideIn { from { transform: translateX(-100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } } 
+        .no-scrollbar::-webkit-scrollbar { display: none; } 
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; } 
+    </style> 
+</head> 
+<body class="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-screen text-white overflow-x-hidden"> 
+     
+    <!-- BYFORT Logo Header --> 
+    <div class="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 glass rounded-2xl p-4 neon-glow shadow-2xl floating"> 
+        <div class="flex items-center space-x-3"> 
+            <div class="gradient-gold bg-gradient-to-r from-yellow-400 to-orange-500 p-3 rounded-2xl shadow-xl"> 
+                <i class="fas fa-crown text-black text-2xl"></i> 
+            </div> 
+            <div> 
+                <h1 class="text-3xl font-black bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 bg-clip-text text-transparent drop-shadow-lg">BYFORT</h1> 
+                <p class="text-xs text-yellow-300 font-medium tracking-wider">E-Commerce & Affiliate Elite</p> 
+            </div> 
+        </div> 
+    </div> 
+ 
+    <!-- Main Navigation --> 
+    <div class="fixed bottom-6 left-6 right-6 z-40 glass-dark rounded-3xl p-2 shadow-2xl backdrop-blur-xl border border-white/10"> 
+        <div class="grid grid-cols-4 gap-2 h-16" id="mainNav"> 
+            <button onclick="showPage('home')" class="group flex flex-col items-center justify-center p-2 rounded-2xl transition-all duration-300 hover:scale-110 hover:glass bg-white/10"> 
+                <i class="fas fa-home text-xl group-hover:text-yellow-400"></i> 
+                <span class="text-xs font-semibold mt-1">Home</span> 
+            </button> 
+            <button onclick="showPage('products')" class="group flex flex-col items-center justify-center p-2 rounded-2xl transition-all duration-300 hover:scale-110 hover:glass bg-white/10"> 
+                <i class="fas fa-store text-xl group-hover:text-yellow-400"></i> 
+                <span class="text-xs font-semibold mt-1">Produk</span> 
+            </button> 
+            <button onclick="showPage('affiliate')" class="group flex flex-col items-center justify-center p-2 rounded-2xl transition-all duration-300 hover:scale-110 hover:glass bg-white/10"> 
+                <i class="fas fa-share-alt text-xl group-hover:text-yellow-400"></i> 
+                <span class="text-xs font-semibold mt-1">Afiliate</span> 
+            </button> 
+            <button onclick="showPage('money')" class="group flex flex-col items-center justify-center p-2 rounded-2xl transition-all duration-300 hover:scale-110 hover:glass bg-white/10"> 
+                <i class="fas fa-wallet text-xl group-hover:text-yellow-400"></i> 
+                <span class="text-xs font-semibold mt-1">Money</span> 
+            </button> 
+        </div> 
+    </div> 
+ 
+    <!-- Theme Toggle --> 
+    <button id="themeToggle" class="fixed top-6 right-6 z-50 glass p-3 rounded-2xl hover:scale-110 transition-all duration-300 shadow-xl border border-white/20"> 
+        <i class="fas fa-moon text-xl text-yellow-400"></i> 
+    </button> 
+ 
+    <!-- Admin Panel Access --> 
+    <div class="fixed top-24 right-6 z-50"> 
+        <button onclick="showAdminLogin()" class="glass-dark p-4 rounded-2xl hover:scale-105 transition-all duration-300 shadow-2xl border border-yellow-500/30"> 
+            <i class="fas fa-cog text-2xl text-yellow-400 mr-2"></i> 
+            <span class="font-semibold text-sm">Admin Panel</span> 
+        </button> 
+    </div> 
+ 
+    <!-- Main Content --> 
+    <div id="mainContent" class="pt-32 pb-32 px-6 space-y-8"> 
+        <!-- Home Page --> 
+        <div id="homePage" class="page active"> 
+            <div class="text-center mb-12"> 
+                <h2 class="text-4xl font-black bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent mb-4">Selamat Datang di BYFORT</h2> 
+                <p class="text-xl text-gray-300 max-w-2xl mx-auto">Platform E-Commerce & Affiliate terbaik dengan sistem real-time 24/7. Dapatkan komisi melimpah dari setiap penjualan!</p> 
+            </div> 
+             
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"> 
+                <div class="glass p-8 rounded-3xl hover:scale-105 transition-all duration-500 group cursor-pointer" onclick="showPage('products')"> 
+                    <i class="fas fa-store text-4xl text-yellow-400 mb-4 group-hover:rotate-12 transition-transform"></i> 
+                    <h3 class="text-2xl font-bold mb-2">Belanja Produk</h3> 
+                    <p class="text-gray-300">Temukan ribuan produk berkualitas dengan harga terbaik</p> 
+                </div> 
+                <div class="glass p-8 rounded-3xl hover:scale-105 transition-all duration-500 group cursor-pointer" onclick="showPage('affiliate')"> 
+                    <i class="fas fa-share-alt text-4xl text-yellow-400 mb-4 group-hover:rotate-12 transition-transform"></i> 
+                    <h3 class="text-2xl font-bold mb-2">Program Affiliate</h3> 
+                    <p class="text-gray-300">Dapatkan komisi hingga ribuan % dari setiap penjualan</p> 
+                </div> 
+                <div class="glass p-8 rounded-3xl hover:scale-105 transition-all duration-500 group cursor-pointer" onclick="showPage('money')"> 
+                    <i class="fas fa-wallet text-4xl text-yellow-400 mb-4 group-hover:rotate-12 transition-transform"></i> 
+                    <h3 class="text-2xl font-bold mb-2">Kelola Keuangan</h3> 
+                    <p class="text-gray-300">Tarik saldo kapan saja ke bank/ewallet pilihanmu</p> 
+                </div> 
+                <div class="glass p-8 rounded-3xl hover:scale-105 transition-all duration-500 group cursor-pointer" onclick="showOrders()"> 
+                    <i class="fas fa-shopping-bag text-4xl text-yellow-400 mb-4 group-hover:rotate-12 transition-transform"></i> 
+                    <h3 class="text-2xl font-bold mb-2">Pesanan Saya</h3> 
+                    <p class="text-gray-300">Lacak status pesanan secara real-time</p> 
+                </div> 
+            </div> 
+ 
+            <!-- Quick Stats --> 
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12"> 
+                <div class="glass p-6 rounded-2xl text-center"> 
+                    <div class="text-3xl font-bold text-yellow-400" id="homeTotalProducts">0</div> 
+                    <div class="text-sm text-gray-300 mt-1">Produk Tersedia</div> 
+                </div> 
+                <div class="glass p-6 rounded-2xl text-center"> 
+                    <div class="text-3xl font-bold text-green-400" id="homeTotalOrders">0</div> 
+                    <div class="text-sm text-gray-300 mt-1">Pesanan Aktif</div> 
+                </div> 
+                <div class="glass p-6 rounded-2xl text-center"> 
+                    <div class="text-3xl font-bold text-blue-400" id="homeTotalAffiliates">0</div> 
+                    <div class="text-sm text-gray-300 mt-1">Afiliator Aktif</div> 
+                </div> 
+                <div class="glass p-6 rounded-2xl text-center"> 
+                    <div class="text-3xl font-bold text-purple-400" id="homeTotalRevenue">Rp 0</div> 
+                    <div class="text-sm text-gray-300 mt-1">Total Revenue</div> 
+                </div> 
+            </div> 
+        </div> 
+ 
+        <!-- Products Page --> 
+        <div id="productsPage" class="page hidden"> 
+            <div class="flex items-center mb-8"> 
+                <i class="fas fa-search text-2xl text-yellow-400 mr-3"></i> 
+                <input type="text" id="productSearch" placeholder="Cari produk, brand, atau kategori..." class="flex-1 glass px-6 py-4 rounded-3xl text-lg focus:outline-none focus:ring-4 ring-yellow-400/30 transition-all duration-300"> 
+            </div> 
+             
+            <div class="space-y-6" id="productsList"> 
+                <div class="text-center py-20"> 
+                    <i class="fas fa-store-slash text-6xl text-gray-500 mb-6"></i> 
+                    <h3 class="text-2xl font-bold text-gray-400 mb-2">Belum ada produk</h3> 
+                    <p class="text-gray-500">Admin akan segera menambahkan produk terbaik untuk Anda</p> 
+                </div> 
+            </div> 
+        </div> 
+ 
+        <!-- Product Detail Modal --> 
+        <div id="productModal" class="fixed inset-0 z-50 hidden bg-black/80 flex items-center justify-center p-6"> 
+            <div class="glass max-w-4xl w-full max-h-[90vh] overflow-y-auto rounded-3xl p-8 m-4"> 
+                <button onclick="closeProductModal()" class="absolute top-6 right-6 text-2xl hover:text-yellow-400 transition-colors">&times;</button> 
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"> 
+                    <div> 
+                        <img id="modalProductImage" src="#" alt="Product" class="w-full h-96 object-cover rounded-2xl shadow-2xl"> 
+                    </div> 
+                    <div> 
+                        <h2 id="modalProductTitle" class="text-4xl font-black mb-6 bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent"></h2> 
+                        <div id="modalProductCommission" class="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-6 py-3 rounded-xl font-bold text-xl mb-8 inline-block"></div> 
+                        <div id="modalProductDescription" class="text-lg text-gray-200 mb-8 leading-relaxed"></div> 
+                        <div class="space-y-4 mb-12"> 
+                            <div class="flex items-center"> 
+                                <i class="fas fa-tag text-yellow-400 mr-3"></i> 
+                                <span id="modalProductTags" class="text-gray-300"></span> 
+                            </div> 
+                            <div class="flex items-center"> 
+                                <i class="fas fa-money-bill-wave text-green-400 mr-3"></i> 
+                                <span id="modalProductPrice" class="text-3xl font-bold text-yellow-400"></span> 
+                            </div> 
+                        </div> 
+                        <div class="flex space-x-4"> 
+                            <button onclick="buyProduct()" class="flex-1 bg-gradient-to-r from-yellow-500 to-orange-500 text-black font-bold py-4 px-8 rounded-2xl text-xl hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-yellow-500/25"> 
+                                <i class="fas fa-shopping-cart mr-2"></i>Beli Sekarang 
+                            </button> 
+                            <button id="addToAffiliateBtn" onclick="addToAffiliate()" class="flex-1 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold py-4 px-8 rounded-2xl text-xl hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-purple-500/25"> 
+                                <i class="fas fa-plus mr-2"></i>Tambah Affiliate 
+                            </button> 
+                        </div> 
+                    </div> 
+                </div> 
+                <div id="reviewsSection" class="mt-12 pt-12 border-t border-white/10"> 
+                    <h3 class="text-2xl font-bold mb-6">Ulasan Produk</h3> 
+                    <div id="reviewsList" class="space-y-4"></div> 
+                </div> 
+            </div> 
+        </div> 
+ 
+        <!-- Affiliate Page --> 
+        <div id="affiliatePage" class="page hidden"> 
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12"> 
+                <div class="glass p-8 rounded-3xl"> 
+                    <h3 class="text-2xl font-bold mb-6 flex items-center"><i class="fas fa-chart-line text-yellow-400 mr-3"></i>Perkiraan Komisi</h3> 
+                    <div class="text-4xl font-black text-green-400 mb-4" id="affiliatePendingCommission">Rp 0</div> 
+                    <p class="text-gray-300 mb-8">Komisi akan masuk ke saldo setelah pesanan selesai</p> 
+                    <div class="space-y-3"> 
+                        <div class="flex justify-between text-sm"><span>Total Transaksi</span><span id="affiliateTotalTx">0</span></div> 
+                        <div class="flex justify-between text-sm"><span>Produk Dipromosikan</span><span id="affiliateProductsCount">0</span></div> 
+                    </div> 
+                </div> 
+                <div class="glass p-8 rounded-3xl"> 
+                    <h3 class="text-2xl font-bold mb-6 flex items-center"><i class="fas fa-clock text-yellow-400 mr-3"></i>Riwayat Transaksi</h3> 
+                    <div id="affiliateTransactions" class="space-y-3 max-h-64 overflow-y-auto no-scrollbar"></div> 
+                </div> 
+            </div> 
+            <div class="glass p-8 rounded-3xl"> 
+                <h3 class="text-2xl font-bold mb-8 flex items-center"><i class="fas fa-share-alt text-yellow-400 mr-3"></i>Produk Affiliate Saya</h3> 
+                <div id="myAffiliateProducts" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div> 
+            </div> 
+        </div> 
+ 
+        <!-- Money Page --> 
+        <div id="moneyPage" class="page hidden"> 
+            <div class="glass p-12 rounded-3xl text-center mb-12"> 
+                <div class="text-6xl font-black text-yellow-400 mb-6 pulse-slow" id="userBalance">Rp 0</div> 
+                <h3 class="text-3xl font-bold mb-4">Saldo Tersedia</h3> 
+                <p class="text-gray-300 mb-8">Minimum penarikan Rp 30.000 • Potongan sistem 20%</p> 
+                <button onclick="showWithdraw()" class="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-bold py-4 px-12 rounded-2xl text-xl hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-red-500/25"> 
+                    <i class="fas fa-arrow-down mr-2"></i>Tarik Saldo 
+                </button> 
+            </div> 
+ 
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12"> 
+                <div class="glass p-8 rounded-3xl cursor-pointer hover:scale-105 transition-all" onclick="showHistory()"> 
+                    <i class="fas fa-history text-4xl text-blue-400 mb-6"></i> 
+                    <h4 class="text-2xl font-bold mb-4">Riwayat Penarikan</h4> 
+                    <p class="text-gray-300" id="withdrawCount">0 transaksi</p> 
+                </div> 
+                <div class="glass p-8 rounded-3xl cursor-pointer hover:scale-105 transition-all" onclick="showSettings()"> 
+                    <i class="fas fa-cog text-4xl text-purple-400 mb-6"></i> 
+                    <h4 class="text-2xl font-bold mb-4">Pengaturan Akun</h4> 
+                    <p class="text-gray-300">Kelola rekening & alamat</p> 
+                </div> 
+            </div> 
+        </div> 
+ 
+        <!-- Orders Page --> 
+        <div id="ordersPage" class="page hidden"> 
+            <h2 class="text-4xl font-black mb-12 text-center bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">Pesanan Saya</h2> 
+            <div id="ordersList" class="space-y-6"> 
+                <div class="text-center py-20"> 
+                    <i class="fas fa-box-open text-6xl text-gray-500 mb-6"></i> 
+                    <h3 class="text-2xl font-bold text-gray-400 mb-2">Belum ada pesanan</h3> 
+                    <p class="text-gray-500">Mulai belanja untuk melihat riwayat pesanan Anda</p> 
+                </div> 
+            </div> 
+        </div> 
+    </div> 
+ 
+    <!-- Subpages --> 
+    <div id="subpages" class="fixed inset-0 z-30 hidden bg-black/50 backdrop-blur-sm flex items-center justify-center p-6"> 
+        <!-- Withdraw Form --> 
+        <div id="withdrawForm" class="glass max-w-md w-full rounded-3xl p-8 hidden"> 
+            <button onclick="hideSubpage()" class="absolute top-6 right-6 text-3xl hover:text-yellow-400 transition-colors">&times;</button> 
+            <h3 class="text-3xl font-bold mb-8 text-center bg-gradient-to-r from-red-400 to-red-500 bg-clip-text text-transparent">Tarik Saldo</h3> 
+            <form onsubmit="confirmWithdraw(event)"> 
+                <div class="space-y-6"> 
+                    <div> 
+                        <label class="block text-sm font-semibold mb-2 flex items-center"><i class="fas fa-university mr-2 text-yellow-400"></i>Metode Pembayaran</label> 
+                        <select id="withdrawMethod" class="w-full glass-dark p-4 rounded-2xl text-lg"> 
+                            <option value="BNI">BNI</option> 
+                            <option value="BCA">BCA</option> 
+                            <option value="Mandiri">Mandiri</option> 
+                            <option value="BRI">BRI</option> 
+                            <option value="OVO">OVO</option> 
+                            <option value="DANA">DANA</option> 
+                            <option value="GoPay">GoPay</option> 
+                        </select> 
+                    </div> 
+                    <div> 
+                        <label class="block text-sm font-semibold mb-2 flex items-center"><i class="fas fa-credit-card mr-2 text-yellow-400"></i>No. Rekening/E-Wallet</label> 
+                        <input type="text" id="withdrawAccount" class="w-full glass-dark p-4 rounded-2xl text-lg" readonly> 
+                    </div> 
+                    <div> 
+                        <label class="block text-sm font-semibold mb-2 flex items-center"><i class="fas fa-money-bill mr-2 text-yellow-400"></i>Jumlah (Rp)</label> 
+                        <input type="number" id="withdrawAmount" min="30000" class="w-full glass-dark p-4 rounded-2xl text-lg text-right" placeholder="Min. Rp 30.000"> 
+                        <div id="withdrawFee" class="text-sm text-gray-400 mt-2"></div> 
+                    </div> 
+                    <button type="submit" class="w-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-bold py-4 px-8 rounded-2xl text-xl hover:scale-105 transition-all duration-300 shadow-xl"> 
+                        <i class="fas fa-arrow-down mr-2"></i>Konfirmasi Penarikan 
+                    </button> 
+                </div> 
+            </form> 
+        </div> 
+ 
+        <!-- Settings Form --> 
+        <div id="settingsForm" class="glass max-w-2xl w-full rounded-3xl p-8 hidden"> 
+            <button onclick="hideSubpage()" class="absolute top-6 right-6 text-3xl hover:text-yellow-400 transition-colors">&times;</button> 
+            <h3 class="text-3xl font-bold mb-8 text-center bg-gradient-to-r from-purple-400 to-indigo-500 bg-clip-text text-transparent">Pengaturan Akun</h3> 
+            <form onsubmit="saveSettings(event)"> 
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8"> 
+                    <div> 
+                        <label class="block text-sm font-semibold mb-4 flex items-center"><i class="fas fa-phone mr-2 text-yellow-400"></i>No. Handphone</label> 
+                        <input type="tel" id="phoneNumber" class="w-full glass-dark p-4 rounded-2xl text-lg mb-6" maxlength="15"> 
+                    </div> 
+                    <div> 
+                        <label class="block text-sm font-semibold mb-4 flex items-center"><i class="fas fa-map-marker-alt mr-2 text-yellow-400"></i>Alamat Lengkap</label> 
+                        <textarea id="userAddress" class="w-full glass-dark p-4 rounded-2xl text-lg h-32 resize-none" maxlength="559" placeholder="Jalan Raya Jaga RT 12 RW 08, dekat Alfamart, rumah nomor 12..."></textarea> 
+                        <div class="text-xs text-gray-400">Maksimal 559 karakter</div> 
+                    </div> 
+                </div> 
+                <div class="flex space-x-4 mt-12"> 
+                    <button type="button" onclick="hideSubpage()" class="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-bold py-4 px-8 rounded-2xl text-lg transition-all duration-300">Batal</button> 
+                    <button type="submit" class="flex-1 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold py-4 px-8 rounded-2xl text-lg hover:scale-105 transition-all duration-300 shadow-xl">Simpan Pengaturan</button> 
+                </div> 
+            </form> 
+        </div> 
+ 
+        <!-- Withdraw History --> 
+        <div id="historyList" class="glass max-w-4xl w-full max-h-[80vh] overflow-y-auto no-scrollbar rounded-3xl p-8 hidden"> 
+            <button onclick="hideSubpage()" class="absolute top-6 right-6 text-3xl hover:text-yellow-400 transition-colors">&times;</button> 
+            <h3 class="text-3xl font-bold mb-12 text-center bg-gradient-to-r from-blue-400 to-cyan-500 bg-clip-text text-transparent">Riwayat Penarikan</h3> 
+            <div id="withdrawHistoryList" class="space-y-4"></div> 
+        </div> 
+    </div> 
+ 
+    <!-- Success Animation --> 
+    <div id="successModal" class="fixed inset-0 z-60 hidden flex items-center justify-center bg-black/70 backdrop-blur-sm"> 
+        <div class="glass p-12 rounded-3xl text-center max-w-md w-full m-6"> 
+            <div class="w-24 h-24 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-8 success-check"> 
+                <i class="fas fa-check text-4xl text-white"></i> 
+            </div> 
+            <h3 id="successMessage" class="text-3xl font-bold mb-6 text-green-400">Transaksi Berhasil!</h3> 
+            <button onclick="hideSuccess()" class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold py-4 px-12 rounded-2xl text-xl hover:scale-105 transition-all duration-300 shadow-xl">Tutup</button> 
+        </div> 
+    </div> 
+ 
+    <!-- Admin Login Modal --> 
+    <div id="adminLoginModal" class="fixed inset-0 z-50 hidden bg-black/90 backdrop-blur-md flex items-center justify-center p-6"> 
+        <div class="glass-dark max-w-md w-full rounded-3xl p-12"> 
+            <h3 class="text-3xl font-black mb-8 text-center bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">Admin Panel BYFORT</h3> 
+            <form onsubmit="loginAdmin(event)"> 
+                <div class="space-y-6"> 
+                    <input type="email" id="adminEmail" placeholder="Email Admin" class="w-full glass p-5 rounded-2xl text-xl text-center" required> 
+                    <input type="password" id="adminPassword" placeholder="Password Admin" class="w-full glass p-5 rounded-2xl text-xl text-center" required> 
+                    <button type="submit" class="w-full gradient-gold text-black font-black py-5 px-8 rounded-2xl text-2xl hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-yellow-500/50 uppercase tracking-wider"> 
+                        Masuk Admin Panel 
+                    </button> 
+                </div> 
+            </form> 
+        </div> 
+    </div> 
+ 
+    <!-- Admin Panel --> 
+    <div id="adminPanel" class="fixed inset-0 z-50 hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 overflow-y-auto"> 
+        <div class="p-8 max-w-7xl mx-auto"> 
+            <!-- Admin Header --> 
+            <div class="glass-dark p-8 rounded-3xl mb-12 flex items-center justify-between"> 
+                <div class="flex items-center space-x-6"> 
+                    <div class="gradient-gold p-4 rounded-2xl"> 
+                        <i class="fas fa-user-shield text-black text-2xl"></i> 
+                    </div> 
+                    <div> 
+                        <h1 class="text-4xl font-black bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">ADMIN PANEL BYFORT</h1> 
+                        <p class="text-xl text-yellow-300">Dashboard Real-time Analytics & Management</p> 
+                    </div> 
+                </div> 
+                <button onclick="logoutAdmin()" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-2xl transition-all duration-300 flex items-center"> 
+                    <i class="fas fa-sign-out-alt mr-2"></i>Keluar 
+                </button> 
+            </div> 
+ 
+            <!-- Admin Navigation --> 
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-12"> 
+                <button onclick="showAdminTab('analytics')" class="glass p-8 rounded-3xl hover:scale-105 transition-all group"> 
+                    <i class="fas fa-chart-bar text-3xl text-blue-400 mb-4 group-hover:rotate-12"></i> 
+                    <h4 class="font-bold text-xl mb-2">Analytics</h4> 
+                    <p class="text-gray-300 text-sm">Data penjualan real-time</p> 
+                </button> 
+                <button onclick="showAdminTab('products')" class="glass p-8 rounded-3xl hover:scale-105 transition-all group"> 
+                    <i class="fas fa-box text-3xl text-green-400 mb-4 group-hover:rotate-12"></i> 
+                    <h4 class="font-bold text-xl mb-2">Kelola Produk</h4> 
+                    <p class="text-gray-300 text-sm">Tambah & edit produk</p> 
+                </button> 
+                <button onclick="showAdminTab('orders')" class="glass p-8 rounded-3xl hover:scale-105 transition-all group"> 
+                    <i class="fas fa-shopping-bag text-3xl text-purple-400 mb-4 group-hover:rotate-12"></i> 
+                    <h4 class="font-bold text-xl mb-2">Pesanan</h4> 
+                    <p class="text-gray-300 text-sm">Update status pengiriman</p> 
+                </button> 
+                <button onclick="showAdminTab('users')" class="glass p-8 rounded-3xl hover:scale-105 transition-all group"> 
+                    <i class="fas fa-users text-3xl text-yellow-400 mb-4 group-hover:rotate-12"></i> 
+                    <h4 class="font-bold text-xl mb-2">Kelola User</h4> 
+                    <p class="text-gray-300 text-sm">Ban & monitor user</p> 
+                </button> 
+            </div> 
+ 
+            <!-- Admin Content --> 
+            <div id="adminContent"> 
+                <!-- Analytics Tab --> 
+                <div id="adminAnalytics" class="admin-tab active"> 
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12"> 
+                        <div class="glass p-8 rounded-3xl text-center"> 
+                            <div class="text-4xl font-black text-yellow-400 mb-4" id="adminTotalProducts">0</div> 
+                            <div class="text-gray-300">Total Produk</div> 
+                        </div> 
+                        <div class="glass p-8 rounded-3xl text-center"> 
+                            <div class="text-4xl font-black text-green-400 mb-4" id="adminTotalOrders">0</div> 
+                            <div class="text-gray-300">Total Pesanan</div> 
+                        </div> 
+                        <div class="glass p-8 rounded-3xl text-center"> 
+                            <div class="text-4xl font-black text-blue-400 mb-4" id="adminTotalRevenue">Rp 0</div> 
+                            <div class="text-gray-300">Total Revenue</div> 
+                        </div> 
+                        <div class="glass p-8 rounded-3xl text-center"> 
+                            <div class="text-4xl font-black text-purple-400 mb-4" id="adminActiveUsers">0</div> 
+                            <div class="text-gray-300">User Aktif</div> 
+                        </div> 
+                    </div> 
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8"> 
+                        <div class="glass p-8 rounded-3xl"> 
+                            <h3 class="text-2xl font-bold mb-6">Grafik Penjualan Real-time</h3> 
+                            <canvas id="salesChart" height="200"></canvas> 
+                        </div> 
+                        <div class="glass p-8 rounded-3xl"> 
+                            <h3 class="text-2xl font-bold mb-6">Pengunjung Real-time</h3> 
+                            <div id="liveVisitors" class="space-y-4"> 
+                                <div class="flex justify-between items-center p-4 bg-white/10 rounded-xl"> 
+                                    <span>User #1</span> 
+                                    <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div> 
+                                </div> 
+                            </div> 
+                        </div> 
+                    </div> 
+                </div> 
+ 
+                <!-- Products Tab --> 
+                <div id="adminProducts" class="admin-tab hidden"> 
+                    <div class="glass p-8 rounded-3xl mb-8"> 
+                        <h3 class="text-3xl font-bold mb-8">Tambah Produk Baru</h3> 
+                        <form onsubmit="addProduct(event)" class="grid grid-cols-1 md:grid-cols-2 gap-8"> 
+                            <input type="file" id="productImage" accept="image/*" class="w-full glass-dark p-4 rounded-2xl mb-6" required> 
+                            <div class="space-y-4"> 
+                                <input type="text" id="productTitle" placeholder="Judul Produk" class="w-full glass-dark p-4 rounded-2xl" required> 
+                                <input type="number" id="productPrice" placeholder="Harga (Rp)" class="w-full glass-dark p-4 rounded-2xl" required> 
+                            </div> 
+                            <div class="space-y-4"> 
+                                <input type="text" id="productTags" placeholder="Tags (pisahkan dengan koma)" class="w-full glass-dark p-4 rounded-2xl"> 
+                                <input type="number" id="productCommission" placeholder="Komisi Affiliate (min 1000)" min="1000" class="w-full glass-dark p-4 rounded-2xl" required> 
+                            </div> 
+                            <textarea id="productDescription" placeholder="Deskripsi produk" class="w-full glass-dark p-4 rounded-2xl md:col-span-2" rows="4" required></textarea> 
+                            <button type="submit" class="md:col-span-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold py-4 px-8 rounded-2xl text-xl hover:scale-105 transition-all shadow-xl">Tambah Produk</button> 
+                        </form> 
+                    </div> 
+                    <h3 class="text-2xl font-bold mb-6">Daftar Produk</h3> 
+                    <div id="adminProductsList" class="space-y-4"></div> 
+                </div> 
+ 
+                <!-- Orders Tab --> 
+                <div id="adminOrders" class="admin-tab hidden"> 
+                    <h3 class="text-3xl font-bold mb-8">Pesanan Terjual</h3> 
+                    <div id="adminSoldProducts" class="space-y-6"></div> 
+                </div> 
+ 
+                <!-- Users Tab --> 
+                <div id="adminUsers" class="admin-tab hidden"> 
+                    <h3 class="text-3xl font-bold mb-8">Kelola Pengguna</h3> 
+                    <div id="adminUsersList" class="space-y-4"></div> 
+                </div> 
+            </div> 
+        </div> 
+    </div> 
+ 
+    <script> 
+        // Global State 
+        let currentUser = { 
+            id: generateDeviceId(), 
+            email: `user_${generateDeviceId().slice(0,8)}@byfort.id`, 
+            balance: 0, 
+            pendingCommission: 0, 
+            address: '', 
+            phone: '', 
+            bank: '', 
+            account: '', 
+            affiliateProducts: [], 
+            orders: [], 
+            withdrawHistory: [], 
+            isBanned: false 
+        }; 
+ 
+        let products = []; 
+        let orders = []; 
+        let users = []; 
+        let adminSalesData = []; 
+        let isDarkMode = true; 
+        let currentProductModal = null; 
+        let affiliateLinks = new Map(); 
+        let salesChart = null; 
+        let isAdminLoggedIn = false; 
+ 
+        // Real-time intervals 
+        setInterval(updateRealTimeData, 1000); 
+        setInterval(updateOrders, 3000); 
+        setInterval(updateAffiliateData, 1000); 
+ 
+        // Initialize 
+        document.addEventListener('DOMContentLoaded', function() { 
+            initTheme(); 
+            loadUserData(); 
+            updateRealTimeData(); 
+            initChart(); 
+            showPage('home'); 
+        }); 
+ 
+        // Device ID for 1 HP 1 Akun permanent 
+        function generateDeviceId() { 
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) { 
+                const r = Math.random() * 16 | 0; 
+                const v = c == 'x' ? r : (r & 0x3 | 0x8); 
+                return v.toString(16); 
+            }); 
+        } 
+ 
+        // Theme System 
+        document.getElementById('themeToggle').addEventListener('click', function() { 
+            isDarkMode = !isDarkMode; 
+            document.body.classList.toggle('bg-gradient-to-br', isDarkMode); 
+            document.body.classList.toggle('bg-gradient-to-br', !isDarkMode); 
+            localStorage.setItem('byfortTheme', isDarkMode ? 'dark' : 'light'); 
+        }); 
+ 
+        function initTheme() { 
+            const savedTheme = localStorage.getItem('byfortTheme'); 
+            isDarkMode = savedTheme !== 'light'; 
+            if (!isDarkMode) { 
+                document.body.style.background = 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%)'; 
+            } 
+        } 
+ 
+        // Page Navigation 
+        function showPage(page) { 
+            document.querySelectorAll('.page').forEach(p => p.classList.add('hidden')); 
+            document.getElementById(page + 'Page').classList.remove('hidden'); 
+             
+            document.querySelectorAll('#mainNav button').forEach((btn, i) => { 
+                btn.style.background = i === [0,1,2,3].indexOf(page === 'home' ? 0 : page === 'products' ? 1 : page === 'affiliate' ? 2 : 3) ? 'rgba(255,215,0,0.2)' : 'rgba(255,255,255,0.1)'; 
+            }); 
+ 
+            if (page === 'products') setupProductSearch(); 
+            if (page === 'money') updateBalanceDisplay(); 
+        } 
+ 
+        // Real-time Data Updates 
+        function updateRealTimeData() { 
+            // Simulate real-time visitor analytics 
+            document.getElementById('liveVisitors').innerHTML = ` 
+                ${Array.from({length: Math.floor(Math.random() * 10) + 5}, (_, i) => ` 
+                    <div class="flex justify-between items-center p-4 bg-white/10 rounded-xl"> 
+                        <span>User #${i+1}</span> 
+                        <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div> 
+                    </div> 
+                `).join('')} 
+            `; 
+ 
+            // Update home stats 
+            document.getElementById('homeTotalProducts').textContent = products.length; 
+            document.getElementById('homeTotalOrders').textContent = orders.filter(o => o.userId === currentUser.id).length; 
+            document.getElementById('homeTotalAffiliates').textContent = users.length; 
+            document.getElementById('homeTotalRevenue').textContent = formatRupiah(adminSalesData.reduce((sum, sale) => sum + sale.amount, 0)); 
+ 
+            if (isAdminLoggedIn) { 
+                updateAdminDashboard(); 
+            } 
+        } 
+ 
+        // Product System 
+        function setupProductSearch() { 
+            const searchInput = document.getElementById('productSearch'); 
+            searchInput.addEventListener('input', function(e) { 
+                const query = e.target.value.toLowerCase(); 
+                const filtered = products.filter(p =>  
+                    p.title.toLowerCase().includes(query) || 
+                    p.tags.some(t => t.toLowerCase().includes(query)) || 
+                    p.description.toLowerCase().includes(query) 
+                ); 
+                displayProducts(filtered.length ? filtered : products.slice(0, 12)); 
+            }); 
+        } 
+ 
+        function displayProducts(productList) { 
+            const container = document.getElementById('productsList'); 
+            if (!productList.length) { 
+                container.innerHTML = ` 
+                    <div class="text-center py-20"> 
+                        <i class="fas fa-store-slash text-6xl text-gray-500 mb-6"></i> 
+                        <h3 class="text-2xl font-bold text-gray-400 mb-2">Belum ada produk</h3> 
+                        <p class="text-gray-500">Admin akan segera menambahkan produk terbaik untuk Anda</p> 
+                    </div> 
+                `; 
+                return; 
+            } 
+ 
+            container.innerHTML = productList.map(product => ` 
+                <div class="glass hover:scale-105 transition-all duration-500 cursor-pointer group rounded-3xl p-8 overflow-hidden relative" onclick="openProductModal(${products.indexOf(product)})"> 
+                    <div class="w-full h-64 bg-gradient-to-br from-gray-700 to-gray-800 rounded-2xl mb-6 overflow-hidden group-hover:scale-110 transition-transform duration-500"> 
+                        <img src="${product.image}" alt="${product.title}" class="w-full h-full object-cover"> 
+                    </div> 
+                    <div class="space-y-4"> 
+                        <h3 class="font-bold text-2xl line-clamp-2 group-hover:text-yellow-400 transition-colors">${product.title}</h3> 
+                        <div class="flex items-center text-yellow-400 font-bold text-xl"> 
+                            <i class="fas fa-rupiah-sign mr-2"></i> 
+                            ${formatRupiah(product.price)} 
+                        </div> 
+                        <div class="flex flex-wrap gap-2"> 
+                            ${product.tags.slice(0,3).map(tag => `<span class="px-3 py-1 bg-white/10 rounded-full text-xs">#${tag}</span>`).join('')} 
+                        </div> 
+                        <div class="absolute top-6 right-6 bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-4 py-2 rounded-xl font-bold opacity-0 group-hover:opacity-100 transition-all duration-300"> 
+                            Komisi Rp ${formatRupiah(product.commission)} 
+                        </div> 
+                    </div> 
+                </div> 
+            `).join(''); 
+        } 
+ 
+        function openProductModal(index) { 
+            currentProductModal = products[index]; 
+            document.getElementById('modalProductTitle').textContent = currentProductModal.title; 
+            document.getElementById('modalProductImage').src = currentProductModal.image; 
+            document.getElementById('modalProductPrice').innerHTML = `<i class="fas fa-rupiah-sign mr-2"></i>${formatRupiah(currentProductModal.price)}`; 
+            document.getElementById('modalProductDescription').textContent = currentProductModal.description; 
+            document.getElementById('modalProductCommission').innerHTML = `Komisi Affiliate<br><span class="text-2xl">${formatRupiah(currentProductModal.commission)}</span>`; 
+            document.getElementById('modalProductTags').textContent = currentProductModal.tags.join(', '); 
+             
+            // Generate unique affiliate link 
+            const affiliateId = currentUser.id + '_' + currentProductModal.id; 
+            affiliateLinks.set(affiliateId, currentProductModal.id); 
+             
+            document.getElementById('productModal').classList.remove('hidden'); 
+        } 
+ 
+        function closeProductModal() { 
+            document.getElementById('productModal').classList.add('hidden'); 
+        } 
+ 
+        function buyProduct() { 
+            if (!currentUser.address) { 
+                alert('Mohon lengkapi alamat pengiriman di menu Money > Pengaturan'); 
+                showPage('money'); 
+                setTimeout(() => showSettings(), 500); 
+                return; 
+            } 
+ 
+            const order = { 
+                id: Date.now(), 
+                productId: currentProductModal.id, 
+                userId: currentUser.id, 
+                affiliateId: null, 
+                timestamp: new Date().toISOString(), 
+                price: currentProductModal.price, 
+                status: 'Menunggu Konfirmasi', 
+                resi: '', 
+                shipping: '', 
+                location: '', 
+                address: currentUser.address 
+            }; 
+ 
+            orders.push(order); 
+            currentUser.orders.push(order); 
+            closeProductModal(); 
+            showOrders(); 
+            saveData(); 
+        } 
+ 
+        // Affiliate System 
+        function addToAffiliate() { 
+            if (currentUser.affiliateProducts.some(p => p.id === currentProductModal.id)) { 
+                alert('Produk sudah ada di affiliate Anda!'); 
+                return; 
+            } 
+ 
+            const affiliateProduct = { ...currentProductModal, link: `#product/${currentUser.id}_${currentProductModal.id}` }; 
+            currentUser.affiliateProducts.push(affiliateProduct); 
+            document.getElementById('addToAffiliateBtn').innerHTML = '<i class="fas fa-check mr-2"></i>Sudah Ditambahkan'; 
+            document.getElementById('addToAffiliateBtn').className = 'flex-1 bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-8 rounded-2xl text-xl hover:scale-105 transition-all duration-300 shadow-xl'; 
+            setTimeout(closeProductModal, 1500); 
+            saveData(); 
+        } 
+ 
+        function updateAffiliateData() { 
+            document.getElementById('affiliatePendingCommission').textContent = formatRupiah(currentUser.pendingCommission); 
+            document.getElementById('affiliateTotalTx').textContent = currentUser.affiliateProducts.length; 
+            document.getElementById('affiliateProductsCount').textContent = currentUser.affiliateProducts.length; 
+ 
+            const container = document.getElementById('myAffiliateProducts'); 
+            container.innerHTML = currentUser.affiliateProducts.map((product, index) => ` 
+                <div class="glass p-6 rounded-2xl hover:scale-105 transition-all cursor-pointer group"> 
+                    <img src="${product.image}" alt="${product.title}" class="w-full h-48 object-cover rounded-xl mb-4 group-hover:scale-110 transition-transform"> 
+                    <h4 class="font-bold text-xl mb-3 line-clamp-2">${product.title}</h4> 
+                    <div class="flex items-center justify-between mb-4"> 
+                        <span class="text-2xl font-black text-yellow-400">${formatRupiah(product.commission)}</span> 
+                        <button onclick="copyAffiliateLink(${index})" class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white px-4 py-2 rounded-xl font-bold hover:scale-105 transition-all flex items-center"> 
+                            <i class="fas fa-copy mr-2"></i>Copy Link 
+                        </button> 
+                    </div> 
+                    <div class="text-xs text-gray-400 truncate" id="affiliateLink_${index}">${product.link}</div> 
+                </div> 
+            `).join(''); 
+ 
+            // Update transactions 
+            document.getElementById('affiliateTransactions').innerHTML = currentUser.orders.slice(-5).map(order => ` 
+                <div class="flex items-center p-4 bg-white/10 rounded-xl"> 
+                    <img src="${products.find(p => p.id === order.productId)?.image || ''}" class="w-12 h-12 object-cover rounded-lg mr-4"> 
+                    <div class="flex-1"> 
+                        <div class="font-bold">${products.find(p => p.id === order.productId)?.title || 'Produk'}</div> 
+                        <div class="text-sm text-gray-400">${new Date(order.timestamp).toLocaleString('id-ID')}</div> 
+                    </div> 
+                    <div class="text-right"> 
+                        <div class="font-bold text-green-400">${formatRupiah(products.find(p => p.id === order.productId)?.commission || 0)}</div> 
+                        <div class="text-xs text-gray-400">${order.status}</div> 
+                    </div> 
+                </div> 
+            `).join('') || '<p class="text-gray-400 text-center py-8 w-full">Belum ada transaksi</p>'; 
+        } 
+ 
+        function copyAffiliateLink(index) { 
+            const link = currentUser.affiliateProducts[index].link; 
+            navigator.clipboard.writeText(window.location.href.split('#')[0] + link); 
+            const btn = event.target.closest('button'); 
+            const original = btn.innerHTML; 
+            btn.innerHTML = '<i class="fas fa-check mr-2"></i>Copied!'; 
+            btn.className = 'bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-xl font-bold hover:scale-105 transition-all flex items-center'; 
+            setTimeout(() => { 
+                btn.innerHTML = original; 
+                btn.className = 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white px-4 py-2 rounded-xl font-bold hover:scale-105 transition-all flex items-center'; 
+            }, 2000); 
+        } 
+ 
+        // Money System 
+        function updateBalanceDisplay() { 
+            document.getElementById('userBalance').textContent = formatRupiah(currentUser.balance); 
+            document.getElementById('withdrawCount').textContent = `${currentUser.withdrawHistory.length} transaksi`; 
+        } 
+ 
+        function showWithdraw() { 
+            if (currentUser.balance < 30000) { 
+                alert('Saldo minimum untuk penarikan adalah Rp 30.000'); 
+                return; 
+            } 
+            document.getElementById('withdrawForm').classList.remove('hidden'); 
+            document.getElementById('subpages').classList.remove('hidden'); 
+            document.getElementById('withdrawAccount').value = currentUser.account || 'Belum diatur'; 
+             
+            const amountInput = document.getElementById('withdrawAmount'); 
+            const feeDisplay = document.getElementById('withdrawFee'); 
+            amountInput.addEventListener('input', function() { 
+                const amount = parseInt(this.value) || 0; 
+                const fee = amount * 0.2; 
+                feeDisplay.innerHTML = `Potongan 20%: ${formatRupiah(fee)}<br><span class="font-bold text-green-400">Diterima: ${formatRupiah(amount - fee)}</span>`; 
+            }); 
+        } 
+ 
+        function confirmWithdraw(e) { 
+            e.preventDefault(); 
+            const amount = parseInt(document.getElementById('withdrawAmount').value); 
+            if (amount < 30000) { 
+                alert('Minimum penarikan Rp 30.000'); 
+                return; 
+            } 
+ 
+            const fee = amount * 0.2; 
+            currentUser.balance -= amount; 
+            currentUser.withdrawHistory.unshift({ 
+                id: Date.now(), 
+                amount, 
+                fee, 
+                net: amount - fee, 
+                method: document.getElementById('withdrawMethod').value, 
+                account: document.getElementById('withdrawAccount').value, 
+                timestamp: new Date().toISOString(), 
+                status: 'Diproses' 
+            }); 
+ 
+            showSuccess('Penarikan berhasil! Saldo akan masuk dalam 24 jam.'); 
+            hideSubpage(); 
+            updateBalanceDisplay(); 
+            saveData(); 
+        } 
+ 
+        function showHistory() { 
+            const container = document.getElementById('withdrawHistoryList'); 
+            container.innerHTML = currentUser.withdrawHistory.map(w => ` 
+                <div class="flex items-center p-6 bg-white/10 rounded-2xl mb-4"> 
+                    <div class="flex-1"> 
+                        <div class="font-bold text-xl">${w.method}</div> 
+                        <div class="text-sm text-gray-400">${w.account}</div> 
+                    </div> 
+                    <div class="text-right"> 
+                        <div class="font-bold text-2xl text-yellow-400">${formatRupiah(w.net)}</div> 
+                        <div class="text-sm text-gray-400">-${formatRupiah(w.fee)} fee</div> 
+                        <div class="text-xs bg-green-500/20 text-green-400 px-3 py-1 rounded-full mt-2">${w.status}</div> 
+                    </div> 
+                </div> 
+            `).join('') || '<p class="text-gray-400 text-center py-12">Belum ada riwayat penarikan</p>'; 
+ 
+            document.getElementById('historyList').classList.remove('hidden'); 
+            document.getElementById('subpages').classList.remove('hidden'); 
+        } 
+ 
+        function showSettings() { 
+            document.getElementById('phoneNumber').value = currentUser.phone; 
+            document.getElementById('userAddress').value = currentUser.address; 
+            document.getElementById('settingsForm').classList.remove('hidden'); 
+            document.getElementById('subpages').classList.remove('hidden'); 
+        } 
+ 
+        function saveSettings(e) { 
+            e.preventDefault(); 
+            currentUser.phone = document.getElementById('phoneNumber').value; 
+            currentUser.address = document.getElementById('userAddress').value; 
+            currentUser.account = document.getElementById('phoneNumber').value; // Use phone as account for demo 
+            hideSubpage(); 
+            alert('Pengaturan berhasil disimpan!'); 
+            saveData(); 
+        } 
+ 
+        // Orders System 
+        function showOrders() { 
+            showPage('orders'); 
+            const container = document.getElementById('ordersList'); 
+            const userOrders = orders.filter(o => o.userId === currentUser.id); 
+             
+            if (!userOrders.length) { 
+                container.innerHTML = ` 
+                    <div class="text-center py-20"> 
+                        <i class="fas fa-box-open text-6xl text-gray-500 mb-6"></i> 
+                        <h3 class="text-2xl font-bold text-gray-400 mb-2">Belum ada pesanan</h3> 
+                        <p class="text-gray-500">Mulai belanja untuk melihat riwayat pesanan Anda</p> 
+                    </div> 
+                `; 
+                return; 
+            } 
+ 
+            container.innerHTML = userOrders.map(order => { 
+                const product = products.find(p => p.id === order.productId); 
+                return ` 
+                    <div class="glass p-8 rounded-3xl"> 
+                        <div class="flex items-start space-x-6 mb-6"> 
+                            <img src="${product?.image || ''}" alt="${product?.title || ''}" class="w-32 h-32 object-cover rounded-2xl flex-shrink-0"> 
+                            <div class="flex-1 min-w-0"> 
+                                <h4 class="font-bold text-2xl mb-2 line-clamp-2">${product?.title || 'Produk'}</h4> 
+                                <div class="flex items-center text-yellow-400 font-bold text-xl mb-4"> 
+                                    <i class="fas fa-rupiah-sign mr-2"></i>${formatRupiah(order.price)} 
+                                </div> 
+                                <div class="space-y-2 text-sm"> 
+                                    <div><i class="fas fa-truck text-blue-400 mr-2"></i>Pengiriman: ${order.shipping || 'Belum update'}</div> 
+                                    <div><i class="fas fa-map-marker-alt text-green-400 mr-2"></i>Lokasi: ${order.location || 'Menunggu update'}</div> 
+                                    ${order.resi ? `<div><i class="fas fa-barcode text-purple-400 mr-2"></i>Resi: ${order.resi}</div>` : ''} 
+                                </div> 
+                            </div> 
+                            <div class="text-right"> 
+                                <div class="text-4xl font-black text-gray-200">${order.status}</div> 
+                            </div> 
+                        </div> 
+                        <div class="bg-white/10 p-4 rounded-2xl"> 
+                            <div class="font-bold mb-2">Alamat Pengiriman:</div> 
+                            <p class="text-gray-300">${order.address}</p> 
+                        </div> 
+                    </div> 
+                `; 
+            }).join(''); 
+        } 
+ 
+        function updateOrders() { 
+            // Auto-complete orders after some time for demo 
+            orders.forEach(order => { 
+                if (order.status === 'Menunggu Konfirmasi' && Math.random() < 0.1) { 
+                    order.status = 'Sedang Dikirim'; 
+                    order.shipping = ['JNT', 'JNE', 'SiCepat'][Math.floor(Math.random() * 3)]; 
+                } 
+                if (order.status === 'Sedang Dikirim' && Math.random() < 0.05) { 
+                    order.status = 'Dalam Perjalanan'; 
+                    order.location = ['Jakarta', 'Bandung', 'Surabaya', 'Medan'][Math.floor(Math.random() * 4)]; 
+                    order.resi = 'RESI' + Math.floor(Math.random() * 1000000); 
+                } 
+                if (order.status === 'Dalam Perjalanan' && Math.random() < 0.03) { 
+                    order.status = 'Pesanan Selesai'; 
+                    order.location = 'Pesanan Selesai'; 
+                     
+                    // Transfer commission to affiliate 
+                    const affiliateMatch = Array.from(affiliateLinks.entries()).find(([key, prodId]) => prodId === order.productId); 
+                    if (affiliateMatch) { 
+                        const product = products.find(p => p.id === order.productId); 
+                        if (product) { 
+                            const affiliateUser = users.find(u => u.id === affiliateMatch[0].split('_')[0]); 
+                            if (affiliateUser) { 
+                                affiliateUser.pendingCommission += product.commission; 
+                                if (Math.random() < 0.3) { // 30% chance to confirm immediately 
+                                    affiliateUser.balance += product.commission; 
+                                    affiliateUser.pendingCommission -= product.commission; 
+                                } 
+                            } 
+                        } 
+                    } 
+                } 
+            }); 
+        } 
+ 
+        // Admin Panel 
+        function showAdminLogin() { 
+            document.getElementById('adminLoginModal').classList.remove('hidden'); 
+        } 
+ 
+        function loginAdmin(e) { 
+            e.preventDefault(); 
+            const email = document.getElementById('adminEmail').value; 
+            const password = document.getElementById('adminPassword').value; 
+             
+            if (email === 'yuanqingwen31@gmail.com' && password === 'Msgfy678') { 
+                isAdminLoggedIn = true; 
+                document.getElementById('adminLoginModal').classList.add('hidden'); 
+                document.getElementById('adminPanel').classList.remove('hidden'); 
+                document.body.style.overflow = 'hidden'; 
+                showAdminTab('analytics'); 
+                updateAdminDashboard(); 
+            } else { 
+                alert('Email atau password salah!'); 
+            } 
+        } 
+ 
+        function logoutAdmin() { 
+            isAdminLoggedIn = false; 
+            document.getElementById('adminPanel').classList.add('hidden'); 
+            document.body.style.overflow = 'auto'; 
+        } 
+ 
+        function showAdminTab(tab) { 
+            document.querySelectorAll('.admin-tab').forEach(t => t.classList.add('hidden')); 
+            document.getElementById('admin' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.remove('hidden'); 
+             
+            if (tab === 'analytics') updateAdminDashboard(); 
+            if (tab === 'products') displayAdminProducts(); 
+            if (tab === 'orders') displayAdminOrders(); 
+            if (tab === 'users') displayAdminUsers(); 
+        } 
+ 
+        function updateAdminDashboard() { 
+            document.getElementById('adminTotalProducts').textContent = products.length; 
+            document.getElementById('adminTotalOrders').textContent = orders.length; 
+            document.getElementById('adminTotalRevenue').textContent = formatRupiah(adminSalesData.reduce((sum, s) => sum + s.amount, 0)); 
+            document.getElementById('adminActiveUsers').textContent = users.length; 
+ 
+            updateSalesChart(); 
+        } 
+ 
+        function addProduct(e) { 
+            e.preventDefault(); 
+            const file = document.getElementById('productImage').files[0]; 
+            if (!file) return; 
+ 
+            const reader = new FileReader(); 
+            reader.onload = function(e) { 
+                const product = { 
+                    id: Date.now(), 
+                    image: e.target.result, 
+                    title: document.getElementById('productTitle').value, 
+                    price: parseInt(document.getElementById('productPrice').value), 
+                    tags: document.getElementById('productTags').value.split(',').map(t => t.trim()).filter(t => t), 
+                    description: document.getElementById('productDescription').value, 
+                    commission: parseInt(document.getElementById('productCommission').value) 
+                }; 
+ 
+                products.unshift(product); 
+                displayProducts(products); 
+                e.target.form.reset(); 
+                alert('Produk berhasil ditambahkan dan siap tayang dalam 3 detik!'); 
+                saveData(); 
+            }; 
+            reader.readAsDataURL(file); 
+        } 
+ 
+        function displayAdminProducts() { 
+            const container = document.getElementById('adminProductsList'); 
+            container.innerHTML = products.map(product => ` 
+                <div class="glass p-6 rounded-2xl flex items-center justify-between group relative"> 
+                    <div class="flex items-center space-x-6 flex-1"> 
+                        <img src="${product.image}" alt="${product.title}" class="w-24 h-24 object-cover rounded-xl"> 
+                        <div> 
+                            <h4 class="font-bold text-xl mb-2">${product.title}</h4> 
+                            <div class="text-2xl font-black text-yellow-400 mb-2">${formatRupiah(product.price)}</div> 
+                            <div class="flex items-center text-green-400"> 
+                                <i class="fas fa-percentage mr-2"></i>Komisi: ${formatRupiah(product.commission)} 
+                            </div> 
+                        </div> 
+                    </div> 
+                    <div class="relative"> 
+                        <button onclick="showProductEdit(${product.id})" class="text-2xl text-gray-400 hover:text-yellow-400 p-2 rounded-xl hover:bg-white/10 transition-all"> 
+                            <i class="fas fa-ellipsis-v"></i> 
+                        </button> 
+                    </div> 
+                </div> 
+            `).join('') || '<p class="text-gray-400 text-center py-12">Belum ada produk</p>'; 
+        } 
+ 
+        function displayAdminOrders() { 
+            const container = document.getElementById('adminSoldProducts'); 
+            const soldProducts = {}; 
+            orders.forEach(order => { 
+                const product = products.find(p => p.id === order.productId); 
+                if (product) { 
+                    const key = product.title; 
+                    if (!soldProducts[key]) soldProducts[key] = []; 
+                    soldProducts[key].push({ order, product }); 
+                } 
+            }); 
+ 
+            container.innerHTML = Object.entries(soldProducts).map(([title, orders]) => ` 
+                <div class="glass p-6 rounded-2xl mb-6"> 
+                    <h4 class="font-bold text-2xl mb-6 flex items-center"> 
+                        <img src="${orders[0].product.image}" class="w-12 h-12 object-cover rounded-xl mr-4"> 
+                        ${title} (${orders.length}x terjual) 
+                    </h4> 
+                    <div class="space-y-4"> 
+                        ${orders.slice(0, 5).map(order => ` 
+                            <div class="flex items-center p-4 bg-white/10 rounded-xl"> 
+                                <div class="font-bold text-sm">${order.order.userId.slice(0, 20)}...</div> 
+                                <span class="mx-4 text-gray-400">beli produk ini</span> 
+                                <button onclick="showOrderEdit(${order.order.id})" class="ml-auto px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-xl font-bold text-sm transition-all">Edit Status</button> 
+                            </div> 
+                        `).join('')} 
+                    </div> 
+                </div> 
+            `).join('') || '<p class="text-gray-400 text-center py-20">Belum ada pesanan</p>'; 
+        } 
+ 
+        function displayAdminUsers() { 
+            const container = document.getElementById('adminUsersList'); 
+            container.innerHTML = users.map(user => ` 
+                <div class="glass p-6 rounded-2xl flex items-center justify-between"> 
+                    <div class="flex items-center space-x-4"> 
+                        <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-indigo-600 rounded-2xl flex items-center justify-center"> 
+                            <i class="fas fa-user text-white font-bold"></i> 
+                        </div> 
+                        <div> 
+                            <div class="font-bold">${user.email}</div> 
+                            <div class="text-sm text-gray-400">Saldo: ${formatRupiah(user.balance)} | Pending: ${formatRupiah(user.pendingCommission)}</div> 
+                        </div> 
+                    </div> 
+                    <div class="flex items-center space-x-2"> 
+                        <span class="px-3 py-1 bg-green-500/20 text-green-400 text-xs font-bold rounded-full">${user.orders?.length || 0} Pesanan</span> 
+                        ${user.isBanned ?  
+                            '<button onclick="unbanUser(\'' + user.id + '\')" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-xl font-bold text-sm transition-all">Unban</button>' : 
+                            '<button onclick="banUser(\'' + user.id + '\')" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl font-bold text-sm transition-all">Ban User</button>' 
+                        } 
+                    </div> 
+                </div> 
+            `).join('') || '<p class="text-gray-400 text-center py-12">Belum ada pengguna</p>'; 
+        } 
+ 
+        // Admin Edit Functions 
+        function showProductEdit(productId) { 
+            const product = products.find(p => p.id === productId); 
+            if (!product) return; 
+ 
+            const modal = document.createElement('div'); 
+            modal.className = 'fixed inset-0 z-60 bg-black/80 backdrop-blur-sm flex items-center justify-center p-6'; 
+            modal.innerHTML = ` 
+                <div class="glass-dark max-w-md w-full rounded-3xl p-8"> 
+                    <h3 class="text-2xl font-bold mb-6">Edit Status Pengiriman</h3> 
+                    <form onsubmit="saveProductEdit(${productId}, event)"> 
+                        <div class="space-y-4"> 
+                            <input type="text" id="editResi" value="${product.resi || ''}" placeholder="No Resi" class="w-full glass p-4 rounded-2xl"> 
+                            <input type="text" id="editShipping" value="${product.shipping || ''}" placeholder="Pengiriman (JNT/JNE)" class="w-full glass p-4 rounded-2xl"> 
+                            <input type="text" id="editLocation" value="${product.location || ''}" placeholder="Lokasi (Jakarta/Pesanan Selesai)" class="w-full glass p-4 rounded-2xl"> 
+                            <button type="submit" class="w-full bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white font-bold py-4 rounded-2xl text-xl hover:scale-105 transition-all shadow-xl">Simpan</button> 
+                        </form> 
+                    </div> 
+                </div> 
+            `; 
+            document.body.appendChild(modal); 
+        } 
+ 
+        window.saveProductEdit = function(productId, e) { 
+            e.preventDefault(); 
+            const product = products.find(p => p.id === productId); 
+            if (product) { 
+                product.resi = document.getElementById('editResi').value; 
+                product.shipping = document.getElementById('editShipping').value; 
+                product.location = document.getElementById('editLocation').value; 
+                 
+                if (product.location === 'Pesanan Selesai') { 
+                    // Remove from user's orders and transfer commission 
+                    orders = orders.filter(o => o.id !== product.orderId); 
+                    const affiliateMatch = Array.from(affiliateLinks.entries()).find(([key, prodId]) => prodId === product.id); 
+                    if (affiliateMatch) { 
+                        const affiliateUser = users.find(u => u.id === affiliateMatch[0].split('_')[0]); 
+                        if (affiliateUser) { 
+                            affiliateUser.balance += product.commission; 
+                            affiliateUser.pendingCommission -= product.commission; 
+                        } 
+                    } 
+                } 
+                 
+                saveData(); 
+                document.querySelector('.z-60').remove(); 
+                displayAdminOrders(); 
+            } 
+        }; 
+ 
+        function banUser(userId) { 
+            const user = users.find(u => u.id === userId); 
+            if (user) { 
+                user.isBanned = true; 
+                saveData(); 
+                displayAdminUsers(); 
+                alert('User berhasil di-ban'); 
+            } 
+        } 
+ 
+        function unbanUser(userId) { 
+            const user = users.find(u => u.id === userId); 
+            if (user) { 
+                user.isBanned = false; 
+                saveData(); 
+                displayAdminUsers(); 
+                alert('User berhasil di-unban'); 
+            } 
+        } 
+ 
+        // Utility Functions 
+        function formatRupiah(amount) { 
+            return new Intl.NumberFormat('id-ID', { 
+                style: 'currency', 
+                currency: 'IDR', 
+                minimumFractionDigits: 0 
+            }).format(amount); 
+        } 
+ 
+        function showSuccess(message) { 
+            document.getElementById('successMessage').textContent = message; 
+            document.getElementById('successModal').classList.remove('hidden'); 
+            setTimeout(hideSuccess, 3000); 
+        } 
+ 
+        function hideSuccess() { 
+            document.getElementById('successModal').classList.add('hidden'); 
+        } 
+ 
+        function hideSubpage() { 
+            document.getElementById('subpages').classList.add('hidden'); 
+            document.querySelectorAll('#subpages > div').forEach(div => div.classList.add('hidden')); 
+        } 
+ 
+        // Data Persistence 
+        function saveData() { 
+            localStorage.setItem('byfort_users', JSON.stringify(users)); 
+            localStorage.setItem('byfort_products', JSON.stringify(products)); 
+            localStorage.setItem('byfort_orders', JSON.stringify(orders)); 
+            localStorage.setItem(`byfort_user_${currentUser.id}`, JSON.stringify(currentUser)); 
+        } 
+ 
+        function loadUserData() { 
+            users = JSON.parse(localStorage.getItem('byfort_users')) || []; 
+            products = JSON.parse(localStorage.getItem('byfort_products')) || []; 
+            orders = JSON.parse(localStorage.getItem('byfort_orders')) || []; 
+             
+            const savedUser = localStorage.getItem(`byfort_user_${currentUser.id}`); 
+            if (savedUser) { 
+                Object.assign(currentUser, JSON.parse(savedUser)); 
+            } else { 
+                users.push(currentUser); 
+            } 
+             
+            // Add current user to users array if not exists 
+            if (!users.find(u => u.id === currentUser.id)) { 
+                users.push(currentUser); 
+            } 
+            saveData(); 
+            displayProducts(products); 
+        } 
+ 
+        // Charts 
+        function initChart() { 
+            const ctx = document.getElementById('salesChart').getContext('2d'); 
+            salesChart = new Chart(ctx, { 
+                type: 'line', 
+                data: { 
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun'], 
+                    datasets: [{ 
+                        label: 'Penjualan', 
+                        data: [12000000, 19000000, 15000000, 25000000, 30000000, 45000000], 
+                        borderColor: '#FFD700', 
+                        backgroundColor: 'rgba(255, 215, 0, 0.1)', 
+                        tension: 0.4, 
+                        fill: true 
+                    }] 
+                }, 
+                options: { 
+                    responsive: true, 
+                    scales: { 
+                        y: { beginAtZero: true, ticks: { callback: value => formatRupiah(value) } } 
+                    } 
+                } 
+            }); 
+        } 
+ 
+        function updateSalesChart() { 
+            if (salesChart) { 
+                salesChart.data.datasets[0].data = adminSalesData.slice(-6).map(s => s.amount); 
+                salesChart.update('none'); 
+            } 
+        } 
+ 
+        // Global event listeners 
+        window.addEventListener('hashchange', function() { 
+            const hash = window.location.hash; 
+            if (hash.startsWith('#product/')) { 
+                const affiliateId = hash.split('/')[1]; 
+                const productId = affiliateLinks.get(affiliateId); 
+                if (productId) { 
+                    const index = products.findIndex(p => p.id == productId); 
+                    if (index !== -1) { 
+                        openProductModal(index); 
+                    } 
+                } 
+            } 
+        }); 
+ 
+        // Subpage back buttons 
+        document.addEventListener('click', function(e) { 
+            if (e.target.classList.contains('back-btn')) { 
+                hideSubpage(); 
+            } 
+        }); 
+ 
+        // Prevent zoom on input focus (mobile) 
+        document.addEventListener('touchstart', function() {}, true); 
+    </script> 
+</body> 
+</html> 
+
